@@ -14,10 +14,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies 📦
-        run: npm install
+        run: yarn install
 
       - name: Build pro 🔧
-        run: npm run build
+        run: yarn run build
 
       - name: Conventional Changelog Action
         id: changelog
@@ -32,4 +32,4 @@ jobs:
         with:
           ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: build # The folder the action should deploy.
+          FOLDER: dist # The folder the action should deploy.
