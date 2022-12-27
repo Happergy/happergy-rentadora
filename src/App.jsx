@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import useSWR from "swr";
 
 const API_KEY = "4a30997d288e2ad2ace0882245357ff1";
+const DEFAULT_POSITION = { lat: 41.404077, lon: 2.174992 };
 
 const fetcherPOST = (url) =>
   fetch(url, {
@@ -21,10 +22,10 @@ const fetcherPOST = (url) =>
   }).then((res) => res.json());
 
 function App() {
-  const [position, setPosition] = useState({ lat: 41.387277, lon: 2.170064 });
+  const [position, setPosition] = useState(DEFAULT_POSITION);
 
   const fetcher = useCallback(
-    (url) => {
+    ({ url }) => {
       const queryParams = `?lat=${position.lat}&lon=${position.lon}&appid=${API_KEY}&units=metric&lang=es`;
       return fetch(url + queryParams).then((res) => res.json());
     },
@@ -36,11 +37,11 @@ function App() {
     fetcherPOST
   );
   const { data: weatherData } = useSWR(
-    "https://api.openweathermap.org/data/2.5/forecast",
+    { url: "https://api.openweathermap.org/data/2.5/forecast", position },
     fetcher
   );
   const { data: currentWeather } = useSWR(
-    "https://api.openweathermap.org/data/2.5/weather",
+    { url: "https://api.openweathermap.org/data/2.5/weather", position },
     fetcher
   );
 
@@ -66,25 +67,9 @@ function App() {
         });
       }
     } catch (error) {
-      const DEFAULT_POSITION = { lat: 38.027106, lon: -1.139693 };
       setPosition(DEFAULT_POSITION);
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (!position) {
-  //     return;
-  //   }
-
-  //   const queryParams = `lat=${position.lat}&lon=${position.lon}&appid=${API_KEY}&units=metric&lang=es`;
-  //   fetch(`https://api.openweathermap.org/data/2.5/forecast?${queryParams}`)
-  //     .then((response) => response.json())
-  //     .then((data) => setWeatherData(data));
-
-  //   fetch(`https://api.openweathermap.org/data/2.5/weather?${queryParams}`)
-  //     .then((response) => response.json())
-  //     .then((data) => setCurrentWeather(data));
-  // }, [position]);
 
   const onClick = () => {
     localStorage.removeItem("location");
