@@ -5,7 +5,7 @@
   text-align: center;
 }
 
-.title {
+.current {
   font-size: 1.5em;
   font-weight: bold;
   color: #fff;
@@ -14,6 +14,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.data {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
 @media (prefers-color-scheme: light) {
