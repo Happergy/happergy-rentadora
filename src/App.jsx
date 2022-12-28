@@ -93,16 +93,25 @@ function App() {
           </p>
           <div className="data">
             <ul>
+              <Weather weatherElement={currentWeather} />
               {weatherData.list
                 .filter((weatherItem) =>
-                  dayjs(weatherItem.dt * 1000).isBefore(dayjs().add(1, "day"))
+                  dayjs(weatherItem.dt * 1000).isBefore(
+                    dayjs().add(1, "day").endOf("day")
+                  )
                 )
                 .map((weatherItem) => {
                   return (
-                    <Weather
-                      weatherElement={weatherItem}
-                      key={weatherItem.dt}
-                    />
+                    <>
+                      <Weather
+                        weatherElement={weatherItem}
+                        key={`weather1-${weatherItem.dt}`}
+                      />
+                      <Weather
+                        weatherElement={weatherItem}
+                        key={`weather2-${weatherItem.dt}`}
+                      />
+                    </>
                   );
                 })}
             </ul>

@@ -12,8 +12,13 @@ export default function Weather({ weatherElement }) {
         width="50"
         height="50"
       />
-      {parseInt(weatherElement.main.temp, 10)}°C /{" "}
-      {weatherElement.main.humidity}% ({date.format("dd HH:mm")})
+      <div className={styles.data}>
+        <p>
+          {parseInt(weatherElement.main.temp, 10)}°C /
+          {weatherElement.main.humidity}%
+        </p>
+        <p>{date.format("dd HH:mm")}</p>
+      </div>
     </li>
   );
 }

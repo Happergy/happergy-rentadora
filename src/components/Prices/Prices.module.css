@@ -1,11 +1,12 @@
-.item {
+.price {
   display: flex;
   align-items: center;
-  margin: 0;
+  justify-content: center;
+  gap: 0.5rem;
   height: 3rem;
 }
 
-.item p {
+.price p {
   margin: 0;
 }
 
