@@ -1,0 +1,35 @@
+{
+  "coord": { "lon": -1.1369, "lat": 38.0269 },
+  "weather": [
+    {
+      "id": 801,
+      "main": "Clouds",
+      "description": "algo de nubes",
+      "icon": "02n"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 11.41,
+    "feels_like": 10.75,
+    "temp_min": 10.16,
+    "temp_max": 12.18,
+    "pressure": 1020,
+    "humidity": 82
+  },
+  "visibility": 10000,
+  "wind": { "speed": 0.45, "deg": 68, "gust": 0.89 },
+  "clouds": { "all": 13 },
+  "dt": 1672262009,
+  "sys": {
+    "type": 2,
+    "id": 2037273,
+    "country": "ES",
+    "sunrise": 1672211982,
+    "sunset": 1672246325
+  },
+  "timezone": 3600,
+  "id": 2519438,
+  "name": "Churra",
+  "cod": 200
+}

@@ -1,10 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+import "./index.css";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+import App from "./App";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { worker } from "./mocks/browser";
+
+if (process.env.NODE_ENV === "development") {
+  worker.start();
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);
