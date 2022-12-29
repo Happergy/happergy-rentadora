@@ -1,8 +1,8 @@
-import bestMomentDevices from "./happergy/prices_22h.json";
-import forecast from "./forecast/forecast_22h.json";
+import bestMomentDevices from "./happergy/prices_0h.json";
+import forecast from "./forecast/forecast_0h.json";
 import image04n from "./images/04n.png";
 import { rest } from "msw";
-import weather from "./weather/weather_22h.json";
+import weather from "./weather/weather_0h.json";
 
 export const handlers = [
   rest.get(

@@ -1,0 +1,234 @@
+{
+  "summary": {
+    "avgPrice": 6991.916666666667,
+    "bestPrice": {
+      "TEU": 303,
+      "EDCGAS": 202,
+      "PMH": 475,
+      "date": "2022-12-29T23:00:00.003Z",
+      "price": 3731,
+      "simulated": false
+    },
+    "currentPrice": {
+      "TEU": 303,
+      "EDCGAS": 202,
+      "PMH": 475,
+      "date": "2022-12-29T23:00:00.003Z",
+      "price": 3731,
+      "simulated": false
+    },
+    "tendency": "up",
+    "worstPrice": {
+      "PMH": 2613,
+      "EDCGAS": 186,
+      "date": "2022-12-30T17:00:00.030Z",
+      "simulated": false,
+      "price": 12175,
+      "TEU": 7441
+    }
+  },
+  "devices": [
+    {
+      "isOutOfRange": false,
+      "startTime": "2022-12-29T23:00:00+00:00",
+      "endTime": "2022-12-30T00:00:00+00:00",
+      "currentCost": "NaN",
+      "cheapestCost": "NaN",
+      "costSavings": 0
+    }
+  ],
+  "nextPrices": [
+    {
+      "TEU": 303,
+      "EDCGAS": 202,
+      "PMH": 475,
+      "date": "2022-12-29T23:00:00.003Z",
+      "price": 3731,
+      "simulated": false
+    },
+    {
+      "price": 4178,
+      "TEU": 303,
+      "simulated": false,
+      "date": "2022-12-30T00:00:00.006Z",
+      "PMH": 487,
+      "EDCGAS": 424
+    },
+    {
+      "simulated": false,
+      "date": "2022-12-30T01:00:00.008Z",
+      "TEU": 303,
+      "PMH": 176,
+      "price": 4139,
+      "EDCGAS": 434
+    },
+    {
+      "EDCGAS": 429,
+      "TEU": 303,
+      "simulated": false,
+      "date": "2022-12-30T02:00:00.010Z",
+      "PMH": 75,
+      "price": 4336
+    },
+    {
+      "EDCGAS": 430,
+      "PMH": 66,
+      "price": 4264,
+      "TEU": 303,
+      "simulated": false,
+      "date": "2022-12-30T03:00:00.011Z"
+    },
+    {
+      "PMH": 114,
+      "date": "2022-12-30T04:00:00.013Z",
+      "EDCGAS": 396,
+      "simulated": false,
+      "TEU": 303,
+      "price": 4291
+    },
+    {
+      "price": 4439,
+      "PMH": 473,
+      "date": "2022-12-30T05:00:00.014Z",
+      "TEU": 303,
+      "simulated": false,
+      "EDCGAS": 350
+    },
+    {
+      "EDCGAS": 257,
+      "TEU": 303,
+      "price": 4052,
+      "simulated": false,
+      "PMH": 476,
+      "date": "2022-12-30T06:00:00.015Z"
+    },
+    {
+      "TEU": 2847,
+      "EDCGAS": 154,
+      "PMH": 690,
+      "date": "2022-12-30T07:00:00.017Z",
+      "price": 5879,
+      "simulated": false
+    },
+    {
+      "date": "2022-12-30T08:00:00.018Z",
+      "TEU": 2847,
+      "price": 5963,
+      "PMH": 950,
+      "EDCGAS": 141,
+      "simulated": false
+    },
+    {
+      "price": 10249,
+      "TEU": 7441,
+      "simulated": false,
+      "date": "2022-12-30T09:00:00.020Z",
+      "EDCGAS": 146,
+      "PMH": 478
+    },
+    {
+      "price": 10298,
+      "PMH": 465,
+      "date": "2022-12-30T10:00:00.021Z",
+      "simulated": false,
+      "EDCGAS": 160,
+      "TEU": 7441
+    },
+    {
+      "price": 10355,
+      "simulated": false,
+      "PMH": 486,
+      "TEU": 7441,
+      "date": "2022-12-30T11:00:00.022Z",
+      "EDCGAS": 181
+    },
+    {
+      "price": 10319,
+      "TEU": 7441,
+      "EDCGAS": 174,
+      "PMH": 470,
+      "date": "2022-12-30T12:00:00.024Z",
+      "simulated": false
+    },
+    {
+      "price": 5631,
+      "EDCGAS": 148,
+      "date": "2022-12-30T13:00:00.025Z",
+      "simulated": false,
+      "PMH": 473,
+      "TEU": 2847
+    },
+    {
+      "PMH": 483,
+      "TEU": 2847,
+      "price": 5596,
+      "EDCGAS": 141,
+      "simulated": false,
+      "date": "2022-12-30T14:00:00.026Z"
+    },
+    {
+      "date": "2022-12-30T15:00:00.028Z",
+      "TEU": 2847,
+      "simulated": false,
+      "price": 5941,
+      "PMH": 495,
+      "EDCGAS": 152
+    },
+    {
+      "price": 6213,
+      "PMH": 1276,
+      "date": "2022-12-30T16:00:00.029Z",
+      "EDCGAS": 135,
+      "TEU": 2847,
+      "simulated": false
+    },
+    {
+      "PMH": 2613,
+      "EDCGAS": 186,
+      "date": "2022-12-30T17:00:00.030Z",
+      "simulated": false,
+      "price": 12175,
+      "TEU": 7441
+    },
+    {
+      "EDCGAS": 191,
+      "date": "2022-12-30T18:00:00.032Z",
+      "PMH": 2646,
+      "TEU": 7441,
+      "price": 12156,
+      "simulated": false
+    },
+    {
+      "price": 11369,
+      "EDCGAS": 184,
+      "date": "2022-12-30T19:00:00.033Z",
+      "simulated": false,
+      "TEU": 7441,
+      "PMH": 1812
+    },
+    {
+      "date": "2022-12-30T20:00:00.034Z",
+      "price": 10212,
+      "PMH": 498,
+      "EDCGAS": 206,
+      "simulated": false,
+      "TEU": 7441
+    },
+    {
+      "TEU": 2847,
+      "price": 5905,
+      "PMH": 498,
+      "EDCGAS": 224,
+      "simulated": false,
+      "date": "2022-12-30T21:00:00.035Z"
+    },
+    {
+      "date": "2022-12-30T22:00:00.037Z",
+      "TEU": 2847,
+      "price": 6115,
+      "EDCGAS": 254,
+      "PMH": 499,
+      "simulated": false
+    }
+  ]
+}
