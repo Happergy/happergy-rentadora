@@ -3,6 +3,7 @@ import "./index.css";
 import App from "./App";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { SWRConfig } from "swr";
 import { worker } from "./mocks/browser";
 
 if (process.env.NODE_ENV === "development") {
@@ -11,6 +12,14 @@ if (process.env.NODE_ENV === "development") {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <SWRConfig
+      value={{
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        dedupingInterval: 3000,
+      }}
+    >
+      <App />
+    </SWRConfig>
   </React.StrictMode>
 );
