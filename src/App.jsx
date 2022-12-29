@@ -5,10 +5,10 @@ import { useCallback, useEffect, useState } from "react";
 import Prices from "./components/Prices/Prices";
 import Weather from "./components/Weather/Weather";
 import dayjs from "dayjs";
+import usePosition from "./hooks/usePosition";
 import useSWR from "swr";
 
 const API_KEY = "4a30997d288e2ad2ace0882245357ff1";
-const DEFAULT_POSITION = { lat: 41.404077, lon: 2.174992 };
 
 const fetcherPOST = (url) =>
   fetch(url, {
@@ -22,11 +22,11 @@ const fetcherPOST = (url) =>
   }).then((res) => res.json());
 
 function App() {
-  const [position, setPosition] = useState(DEFAULT_POSITION);
+  const position = usePosition();
 
   const fetcher = useCallback(
     ({ url }) => {
-      const queryParams = `?lat=${position.lat}&lon=${position.lon}&appid=${API_KEY}&units=metric&lang=es`;
+      const queryParams = `?lat=${position.latitude}&lon=${position.longitude}&appid=${API_KEY}&units=metric&lang=es`;
       return fetch(url + queryParams).then((res) => res.json());
     },
     [position]
@@ -44,32 +44,6 @@ function App() {
     { url: "https://api.openweathermap.org/data/2.5/weather", position },
     fetcher
   );
-
-  useEffect(() => {
-    try {
-      const location = localStorage.getItem("location");
-      if (location) {
-        setPosition(JSON.parse(location));
-      } else {
-        navigator.geolocation.getCurrentPosition((position) => {
-          const { latitude, longitude } = position.coords;
-          setPosition({
-            lat: latitude,
-            lon: longitude,
-          });
-          localStorage.setItem(
-            "location",
-            JSON.stringify({
-              lat: latitude,
-              lon: longitude,
-            })
-          );
-        });
-      }
-    } catch (error) {
-      setPosition(DEFAULT_POSITION);
-    }
-  }, []);
 
   const onClick = () => {
     localStorage.removeItem("location");
