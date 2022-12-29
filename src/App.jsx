@@ -1,49 +1,11 @@
 import "./App.css";
 
-import { useCallback, useEffect, useState } from "react";
-
 import Prices from "./components/Prices/Prices";
 import Weather from "./components/Weather/Weather";
-import dayjs from "dayjs";
-import usePosition from "./hooks/usePosition";
-import useSWR from "swr";
-
-const API_KEY = "4a30997d288e2ad2ace0882245357ff1";
-
-const fetcherPOST = (url) =>
-  fetch(url, {
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-    cache: "no-store",
-    body: JSON.stringify({
-      tariff: "PCB",
-      config: [{}],
-    }),
-  }).then((res) => res.json());
+import useData from "./hooks/useData";
 
 function App() {
-  const position = usePosition();
-
-  const fetcher = useCallback(
-    ({ url }) => {
-      const queryParams = `?lat=${position.latitude}&lon=${position.longitude}&appid=${API_KEY}&units=metric&lang=es`;
-      return fetch(url + queryParams).then((res) => res.json());
-    },
-    [position]
-  );
-
-  const { data: prices } = useSWR(
-    "https://api.happergy.es/bestMomentDevices",
-    fetcherPOST
-  );
-  const { data: weatherData } = useSWR(
-    { url: "https://api.openweathermap.org/data/2.5/forecast", position },
-    fetcher
-  );
-  const { data: currentWeather } = useSWR(
-    { url: "https://api.openweathermap.org/data/2.5/weather", position },
-    fetcher
-  );
+  const { prices, weatherData, currentWeather } = useData();
 
   const onClick = () => {
     localStorage.removeItem("location");
@@ -68,26 +30,20 @@ function App() {
           <div className="data">
             <ul>
               <Weather weatherElement={currentWeather} />
-              {weatherData.list
-                .filter((weatherItem) =>
-                  dayjs(weatherItem.dt * 1000).isBefore(
-                    dayjs().add(1, "day").endOf("day")
-                  )
-                )
-                .map((weatherItem) => {
-                  return (
-                    <>
-                      <Weather
-                        weatherElement={weatherItem}
-                        key={`weather1-${weatherItem.dt}`}
-                      />
-                      <Weather
-                        weatherElement={weatherItem}
-                        key={`weather2-${weatherItem.dt}`}
-                      />
-                    </>
-                  );
-                })}
+              {weatherData.map((weatherItem) => {
+                return (
+                  <>
+                    <Weather
+                      weatherElement={weatherItem}
+                      key={`weather1-${weatherItem.dt}`}
+                    />
+                    <Weather
+                      weatherElement={weatherItem}
+                      key={`weather2-${weatherItem.dt}`}
+                    />
+                  </>
+                );
+              })}
             </ul>
             <ul>
               <Prices prices={prices?.nextPrices} />
