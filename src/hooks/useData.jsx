@@ -102,8 +102,10 @@ export default function useData() {
     return 0;
   }
   const sortedData = Object.values(data).sort(compare);
-  let bestPrice;
-  let bestWeatherPrice;
+  let bestPriceToday;
+  let bestPriceTomorrow;
+  let bestWeatherPriceToday;
+  let bestWeatherPriceTomorrow;
 
   if (sortedData.length) {
     // fill forecast data with the next value first or previous value if there is no data
@@ -124,35 +126,57 @@ export default function useData() {
       }
     }
 
-    // find the index in the array sortedData with the lowest price
-    const bestPriceIndex = sortedData.reduce((minIndex, item, index, array) => {
-      if (item.price < array[minIndex].price) {
-        return index;
-      }
-      return minIndex;
-    }, 0);
-    sortedData[bestPriceIndex].bestPrice = true;
-    bestPrice = sortedData[bestPriceIndex].price;
+    const getBestPrice = (targetPrices) =>
+      targetPrices.reduce((minIndex, item, index, array) => {
+        if (item.price < array[minIndex].price) {
+          return index;
+        }
+        return minIndex;
+      }, 0);
 
-    // find the index in the array sortedData with the lowest humidity and highest temperature
-    const bestWeatherIndex = sortedData
-      .slice(1)
-      .reduce((minIndex, item, index, array) => {
+    const getBestWeather = (targetPrices) =>
+      targetPrices.reduce((minIndex, item, index, array) => {
         if (item.humidity < array[minIndex].humidity) {
           return index;
         }
         return minIndex;
       }, 0);
-    if (sortedData[bestWeatherIndex + 1]) {
-      sortedData[bestWeatherIndex + 1].bestWeather = true;
-      bestWeatherPrice = sortedData[bestWeatherIndex + 1].price;
+
+    const isToday = ({ date }) => dayjs(date).isBefore(dayjs().endOf("day"));
+    const isTomorrow = ({ date }) => dayjs(date).isAfter(dayjs().endOf("day"));
+
+    // find the index in the array sortedData with the lowest price
+    const bestPriceIndexToday = getBestPrice(sortedData.filter(isToday));
+    sortedData[bestPriceIndexToday].bestPrice = true;
+    bestPriceToday = sortedData[bestPriceIndexToday].price;
+
+    // find the index in the array sortedData with the lowest price
+    const bestPriceIndexTomorrow = getBestPrice(sortedData.filter(isTomorrow));
+    sortedData[bestPriceIndexTomorrow].bestPrice = true;
+    bestPriceTomorrow = sortedData[bestPriceIndexTomorrow].price;
+
+    // find the index in the array sortedData with the lowest humidity and highest temperature
+    const bestWeatherIndexToday = getBestWeather(sortedData.filter(isToday));
+    if (sortedData[bestWeatherIndexToday]) {
+      sortedData[bestWeatherIndexToday].bestWeather = true;
+      bestWeatherPriceToday = sortedData[bestWeatherIndexToday].price;
+    }
+
+    const bestWeatherIndexTomorrow = getBestWeather(
+      sortedData.filter(isTomorrow)
+    );
+    if (sortedData[bestWeatherIndexTomorrow]) {
+      sortedData[bestWeatherIndexTomorrow].bestWeather = true;
+      bestWeatherPriceTomorrow = sortedData[bestWeatherIndexTomorrow].price;
     }
   }
 
   return {
     currentWeather,
     data: sortedData,
-    bestPrice,
-    bestWeatherPrice,
+    bestPriceToday,
+    bestPriceTomorrow,
+    bestWeatherPriceToday,
+    bestWeatherPriceTomorrow,
   };
 }
