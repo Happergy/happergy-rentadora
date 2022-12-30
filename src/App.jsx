@@ -52,6 +52,7 @@ function App() {
                 humidity,
                 icon,
                 price,
+                bestPrice,
                 simulatedPrice,
                 simulatedWeather,
                 temp,
@@ -79,7 +80,7 @@ function App() {
                       {simulatedWeather ? "☀️" : "✅"}{" "}
                       {simulatedPrice ? "💰" : "✅"}
                     </td>
-                    <td></td>
+                    <td>{bestPrice && "🟢"}</td>
                   </tr>
                 );
               }

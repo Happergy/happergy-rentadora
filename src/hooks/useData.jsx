@@ -73,15 +73,23 @@ export default function useData() {
     extractWeatherData(currentWeather);
   }
   if (prices?.nextPrices) {
-    prices.nextPrices.forEach((priceItem) => {
-      const key = dayjs(priceItem.date).format(FORMAT);
+    // extend data with prices and simulated prices if available
+    // adding to the price the next price to get the price for the two hours duration
+    for (let i = 0; i < prices.nextPrices.length; i++) {
+      const key = dayjs(prices.nextPrices[i].date).format(FORMAT);
       data[key] = {
-        date: dayjs(priceItem.date).format(),
-        price: priceItem.price,
-        simulatedPrice: priceItem.simulated,
+        date: dayjs(prices.nextPrices[i].date).format(),
+        price: prices.nextPrices[i].price,
+        simulatedPrice: prices.nextPrices[i].simulated,
         ...data[key],
       };
-    });
+      if (prices.nextPrices[i + 1]) {
+        data[key].price =
+          prices.nextPrices[i].price + prices.nextPrices[i + 1].price;
+      } else {
+        data[key].price = prices.nextPrices[i].price * 2;
+      }
+    }
   }
 
   function compare(a, b) {
@@ -96,7 +104,7 @@ export default function useData() {
 
   const sortedData = Object.values(data).sort(compare);
 
-  // fill data with the previous value or next value if there is no data
+  // fill forecast data with the next value first or previous value if there is no data
   for (let i = 0; i < sortedData.length; i++) {
     if (!sortedData[i].temp) {
       sortedData[i].temp = sortedData[i + 1]?.temp || sortedData[i - 1]?.temp;
@@ -114,7 +122,14 @@ export default function useData() {
     }
   }
 
-  console.log(sortedData);
+  // find the index in the array sortedData with the lowest price
+  const bestPriceIndex = sortedData.reduce((minIndex, item, index, array) => {
+    if (item.price < array[minIndex].price) {
+      return index;
+    }
+    return minIndex;
+  }, 0);
+  sortedData[bestPriceIndex].bestPrice = true;
 
   return {
     currentWeather,
