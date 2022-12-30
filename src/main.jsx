@@ -17,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
         dedupingInterval: 3000,
+        revalidateOnMount: true,
       }}
     >
       <App />

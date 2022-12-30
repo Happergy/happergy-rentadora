@@ -101,52 +101,58 @@ export default function useData() {
     }
     return 0;
   }
-
   const sortedData = Object.values(data).sort(compare);
+  let bestPrice;
+  let bestWeatherPrice;
 
-  // fill forecast data with the next value first or previous value if there is no data
-  for (let i = 0; i < sortedData.length; i++) {
-    if (!sortedData[i].temp) {
-      sortedData[i].temp = sortedData[i + 1]?.temp || sortedData[i - 1]?.temp;
-      sortedData[i].humidity =
-        sortedData[i + 1]?.humidity || sortedData[i - 1]?.humidity;
-      sortedData[i].wind = sortedData[i + 1]?.wind || sortedData[i - 1]?.wind;
-      sortedData[i].clouds =
-        sortedData[i + 1]?.clouds || sortedData[i - 1]?.clouds;
-      sortedData[i].icon = sortedData[i + 1]?.icon || sortedData[i - 1]?.icon;
-      sortedData[i].description =
-        sortedData[i + 1]?.description || sortedData[i - 1]?.description;
-      sortedData[i].clouds =
-        sortedData[i + 1]?.clouds || sortedData[i - 1]?.clouds;
-      sortedData[i].simulatedWeather = true;
+  if (sortedData.length) {
+    // fill forecast data with the next value first or previous value if there is no data
+    for (let i = 0; i < sortedData.length; i++) {
+      if (!sortedData[i].temp) {
+        sortedData[i].temp = sortedData[i + 1]?.temp || sortedData[i - 1]?.temp;
+        sortedData[i].humidity =
+          sortedData[i + 1]?.humidity || sortedData[i - 1]?.humidity;
+        sortedData[i].wind = sortedData[i + 1]?.wind || sortedData[i - 1]?.wind;
+        sortedData[i].clouds =
+          sortedData[i + 1]?.clouds || sortedData[i - 1]?.clouds;
+        sortedData[i].icon = sortedData[i + 1]?.icon || sortedData[i - 1]?.icon;
+        sortedData[i].description =
+          sortedData[i + 1]?.description || sortedData[i - 1]?.description;
+        sortedData[i].clouds =
+          sortedData[i + 1]?.clouds || sortedData[i - 1]?.clouds;
+        sortedData[i].simulatedWeather = true;
+      }
+    }
+
+    // find the index in the array sortedData with the lowest price
+    const bestPriceIndex = sortedData.reduce((minIndex, item, index, array) => {
+      if (item.price < array[minIndex].price) {
+        return index;
+      }
+      return minIndex;
+    }, 0);
+    sortedData[bestPriceIndex].bestPrice = true;
+    bestPrice = sortedData[bestPriceIndex].price;
+
+    // find the index in the array sortedData with the lowest humidity and highest temperature
+    const bestWeatherIndex = sortedData
+      .slice(1)
+      .reduce((minIndex, item, index, array) => {
+        if (item.humidity < array[minIndex].humidity) {
+          return index;
+        }
+        return minIndex;
+      }, 0);
+    if (sortedData[bestWeatherIndex + 1]) {
+      sortedData[bestWeatherIndex + 1].bestWeather = true;
+      bestWeatherPrice = sortedData[bestWeatherIndex + 1].price;
     }
   }
-
-  // find the index in the array sortedData with the lowest price
-  const bestPriceIndex = sortedData.reduce((minIndex, item, index, array) => {
-    if (item.price < array[minIndex].price) {
-      return index;
-    }
-    return minIndex;
-  }, 0);
-  sortedData[bestPriceIndex].bestPrice = true;
-
-  // find the index in the array sortedData with the lowest humidity and highest temperature
-  const bestWeatherIndex = sortedData.reduce((minIndex, item, index, array) => {
-    if (
-      item.humidity < array[minIndex].humidity &&
-      item.temp > array[minIndex].temp
-    ) {
-      return index;
-    }
-    return minIndex;
-  }, 0);
-  sortedData[bestWeatherIndex].bestWeather = true;
 
   return {
     currentWeather,
     data: sortedData,
-    bestPrice: sortedData[bestPriceIndex].price,
-    bestWeatherPrice: sortedData[bestWeatherIndex].price,
+    bestPrice,
+    bestWeatherPrice,
   };
 }

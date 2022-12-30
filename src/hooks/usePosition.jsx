@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const DEFAULT_POSITION = { lat: 41.404077, lon: 2.174992 }; // Barcelona
+const DEFAULT_POSITION = { latitude: 41.404077, longitude: 2.174992 }; // Barcelona
 export default function usePosition() {
   const [position, setPosition] = useState(DEFAULT_POSITION);
 

@@ -4,13 +4,7 @@ import datejs from "dayjs";
 import useData from "./hooks/useData";
 
 function App() {
-  const {
-    currentWeather,
-    data,
-    bestPrice,
-    bestWeatherPrice,
-    bestPriceTomorrow,
-  } = useData();
+  const { currentWeather, data, bestPrice, bestWeatherPrice } = useData();
 
   const onClick = () => {
     localStorage.removeItem("location");
@@ -39,10 +33,10 @@ function App() {
           <p className="best">
             Best price: {parseFloat(bestPrice / 100000).toFixed(2)}€
           </p>
-          <p className="best">
+          {/* <p className="best">
             Best price Tomorrow:{" "}
             {parseFloat(bestPriceTomorrow / 100000).toFixed(2)}€
-          </p>
+          </p> */}
           <p>
             Best weather price:{" "}
             {parseFloat(bestWeatherPrice / 100000).toFixed(2)}€
