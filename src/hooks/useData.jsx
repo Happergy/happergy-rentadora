@@ -22,6 +22,9 @@ export default function useData() {
 
   const fetcher = useCallback(
     ({ url }) => {
+      if (!position) {
+        return;
+      }
       const queryParams = `?lat=${position.latitude}&lon=${position.longitude}&appid=${API_KEY}&units=metric&lang=es`;
       return fetch(url + queryParams).then((res) => res.json());
     },
@@ -75,7 +78,7 @@ export default function useData() {
       data[key] = {
         date: dayjs(priceItem.date).format(),
         price: priceItem.price,
-        simulated: priceItem.simulated,
+        simulatedPrice: priceItem.simulated,
         ...data[key],
       };
     });
@@ -92,6 +95,26 @@ export default function useData() {
   }
 
   const sortedData = Object.values(data).sort(compare);
+
+  // fill data with the previous value or next value if there is no data
+  for (let i = 0; i < sortedData.length; i++) {
+    if (!sortedData[i].temp) {
+      sortedData[i].temp = sortedData[i + 1]?.temp || sortedData[i - 1]?.temp;
+      sortedData[i].humidity =
+        sortedData[i + 1]?.humidity || sortedData[i - 1]?.humidity;
+      sortedData[i].wind = sortedData[i + 1]?.wind || sortedData[i - 1]?.wind;
+      sortedData[i].clouds =
+        sortedData[i + 1]?.clouds || sortedData[i - 1]?.clouds;
+      sortedData[i].icon = sortedData[i + 1]?.icon || sortedData[i - 1]?.icon;
+      sortedData[i].description =
+        sortedData[i + 1]?.description || sortedData[i - 1]?.description;
+      sortedData[i].clouds =
+        sortedData[i + 1]?.clouds || sortedData[i - 1]?.clouds;
+      sortedData[i].simulatedWeather = true;
+    }
+  }
+
+  console.log(sortedData);
 
   return {
     currentWeather,

@@ -46,18 +46,19 @@ function App() {
           <tbody>
             {data.map(
               ({
-                date,
-                temp,
-                humidity,
-                wind,
                 clouds,
-                price,
-                simulated,
-                icon,
+                date,
                 description,
+                humidity,
+                icon,
+                price,
+                simulatedPrice,
+                simulatedWeather,
+                temp,
+                wind,
               }) => {
                 return (
-                  <tr>
+                  <tr key={datejs(date).unix()}>
                     <th scope="row">{datejs(date).format("ddd HH:00")}</th>
                     <td>
                       {icon && (
@@ -73,8 +74,11 @@ function App() {
                     <td>{humidity && parseInt(humidity, 10)}%</td>
                     <td>{wind}</td>
                     <td>{clouds}</td>
-                    <td>{price && parseFloat(price / 10000).toFixed(2)}€</td>
-                    <td>{simulated ? "🟡" : ""}</td>
+                    <td>{price && parseFloat(price / 100000).toFixed(2)}€</td>
+                    <td>
+                      {simulatedWeather ? "☀️" : "✅"}{" "}
+                      {simulatedPrice ? "💰" : "✅"}
+                    </td>
                     <td></td>
                   </tr>
                 );
