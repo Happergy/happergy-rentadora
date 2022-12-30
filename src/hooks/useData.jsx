@@ -131,8 +131,22 @@ export default function useData() {
   }, 0);
   sortedData[bestPriceIndex].bestPrice = true;
 
+  // find the index in the array sortedData with the lowest humidity and highest temperature
+  const bestWeatherIndex = sortedData.reduce((minIndex, item, index, array) => {
+    if (
+      item.humidity < array[minIndex].humidity &&
+      item.temp > array[minIndex].temp
+    ) {
+      return index;
+    }
+    return minIndex;
+  }, 0);
+  sortedData[bestWeatherIndex].bestWeather = true;
+
   return {
     currentWeather,
     data: sortedData,
+    bestPrice: sortedData[bestPriceIndex].price,
+    bestWeatherPrice: sortedData[bestWeatherIndex].price,
   };
 }

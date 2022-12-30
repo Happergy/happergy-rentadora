@@ -4,7 +4,13 @@ import datejs from "dayjs";
 import useData from "./hooks/useData";
 
 function App() {
-  const { currentWeather, data } = useData();
+  const {
+    currentWeather,
+    data,
+    bestPrice,
+    bestWeatherPrice,
+    bestPriceTomorrow,
+  } = useData();
 
   const onClick = () => {
     localStorage.removeItem("location");
@@ -28,6 +34,21 @@ function App() {
           </p>
         </>
       )}
+      {bestPrice && bestWeatherPrice && (
+        <>
+          <p className="best">
+            Best price: {parseFloat(bestPrice / 100000).toFixed(2)}€
+          </p>
+          <p className="best">
+            Best price Tomorrow:{" "}
+            {parseFloat(bestPriceTomorrow / 100000).toFixed(2)}€
+          </p>
+          <p>
+            Best weather price:{" "}
+            {parseFloat(bestWeatherPrice / 100000).toFixed(2)}€
+          </p>
+        </>
+      )}
       {data && (
         <table>
           <thead>
@@ -46,13 +67,14 @@ function App() {
           <tbody>
             {data.map(
               ({
+                bestPrice,
+                bestWeather,
                 clouds,
                 date,
                 description,
                 humidity,
                 icon,
                 price,
-                bestPrice,
                 simulatedPrice,
                 simulatedWeather,
                 temp,
@@ -80,7 +102,10 @@ function App() {
                       {simulatedWeather ? "☀️" : "✅"}{" "}
                       {simulatedPrice ? "💰" : "✅"}
                     </td>
-                    <td>{bestPrice && "🟢"}</td>
+                    <td>
+                      {bestWeather && "👕"}
+                      {bestPrice && "🟢"}
+                    </td>
                   </tr>
                 );
               }
