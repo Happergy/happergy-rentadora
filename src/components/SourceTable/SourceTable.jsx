@@ -53,7 +53,7 @@ export default function SourceTable({ data }) {
                   <td>{price && parseFloat(price / 100000).toFixed(2)}€</td>
                   <td>
                     {simulatedWeather ? "🚧" : "✅"}{" "}
-                    {simulatedPrice ? "🚧" : "✅"}
+                    {!!simulatedPrice ? "🚧" : "✅"}
                   </td>
                   <td>
                     {bestWeather && "👕"}
