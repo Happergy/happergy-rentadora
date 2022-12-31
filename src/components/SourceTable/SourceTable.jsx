@@ -39,7 +39,7 @@ export default function SourceTable({ data }) {
                   <td>
                     {icon && (
                       <img
-                        src={`http://openweathermap.org/img/w/${icon}.png`}
+                        src={`https://openweathermap.org/img/w/${icon}.png`}
                         alt={description}
                         width="50"
                         height="50"
