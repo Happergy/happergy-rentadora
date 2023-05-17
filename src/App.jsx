@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import "./App.css";
 
 import SourceTable from "./components/SourceTable/SourceTable";
@@ -37,13 +38,15 @@ function App() {
       )}
       {bestPriceToday && (
         <p className="best">
-          Best price: {parseFloat(bestPriceToday / 100000).toFixed(2)}€
+          Best price: {parseFloat(bestPriceToday.price / 100000).toFixed(2)}€ (
+          {dayjs(bestPriceToday.date).format("ddd HH:00")})
         </p>
       )}
       {bestPriceTomorrow && (
         <p className="best">
           Best price Tomorrow:{" "}
-          {parseFloat(bestPriceTomorrow / 100000).toFixed(2)}€
+          {parseFloat(bestPriceTomorrow.price / 100000).toFixed(2)}€ (
+          {dayjs(bestPriceTomorrow.date).format("ddd HH:00")})
         </p>
       )}
       {bestWeatherPriceToday && bestWeatherPriceTomorrow && (

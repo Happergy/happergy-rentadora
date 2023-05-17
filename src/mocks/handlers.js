@@ -1,4 +1,5 @@
 import bestMomentDevices from "./happergy/prices.json";
+import githubPrices from "./happergy/githubPrices.json";
 import forecast from "./forecast/forecast.json";
 import image04n from "./images/04n.png";
 import { rest } from "msw";
@@ -24,5 +25,8 @@ export const handlers = [
   }),
   rest.post("https://api.happergy.es/bestMomentDevices", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json(bestMomentDevices));
+  }),
+  rest.get("*/happergy-prices/*", (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json(githubPrices));
   }),
 ];

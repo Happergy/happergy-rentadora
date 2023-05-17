@@ -3,15 +3,11 @@ import { useCallback } from "react";
 import usePosition from "./usePosition";
 import useSWR from "swr";
 
-const fetcherPOST = (url) =>
+const fetcherPrices = (url) =>
   fetch(url, {
-    method: "post",
+    method: "get",
     headers: { "Content-Type": "application/json" },
     cache: "no-store",
-    body: JSON.stringify({
-      tariff: "PCB",
-      config: [{}],
-    }),
   }).then((res) => res.json());
 
 const API_KEY = "4a30997d288e2ad2ace0882245357ff1";
@@ -32,8 +28,8 @@ export default function useData() {
   );
 
   const { data: prices } = useSWR(
-    "https://api.happergy.es/bestMomentDevices",
-    fetcherPOST
+    "https://raw.githubusercontent.com/Happergy/happergy-prices/main/data/happergy.json",
+    fetcherPrices
   );
   const { data: weatherData } = useSWR(
     { url: "https://api.openweathermap.org/data/2.5/forecast", position },
@@ -72,26 +68,31 @@ export default function useData() {
   if (currentWeather) {
     extractWeatherData(currentWeather);
   }
-  if (prices?.nextPrices) {
+
+  console.log("prices", prices);
+  const { pvpc } = prices || {};
+  console.log("pvpc", pvpc);
+  if (pvpc?.nextPrices) {
     // extend data with prices and simulated prices if available
     // adding to the price the next price to get the price for the two hours duration
-    for (let i = 0; i < prices.nextPrices.length; i++) {
-      const key = dayjs(prices.nextPrices[i].date).format(FORMAT);
+    for (let i = 0; i < pvpc.nextPrices.length; i++) {
+      const key = dayjs(pvpc.nextPrices[i].date).format(FORMAT);
       data[key] = {
-        date: dayjs(prices.nextPrices[i].date).format(),
-        price: prices.nextPrices[i].price,
-        simulatedPrice: prices.nextPrices[i].simulated,
+        date: dayjs(pvpc.nextPrices[i].date).format(),
+        price: pvpc.nextPrices[i].price,
+        simulatedPrice: pvpc.nextPrices[i].simulated,
         ...data[key],
       };
-      if (prices.nextPrices[i + 1]) {
+      if (pvpc.nextPrices[i + 1]) {
         data[key].price =
-          prices.nextPrices[i].price + prices.nextPrices[i + 1].price;
+          pvpc.nextPrices[i].price + pvpc.nextPrices[i + 1].price;
       } else {
-        data[key].price = prices.nextPrices[i].price * 2;
+        data[key].price = pvpc.nextPrices[i].price * 2;
       }
     }
   }
 
+  console.log("data", data);
   function compare(a, b) {
     if (a.date < b.date) {
       return -1;
@@ -148,12 +149,14 @@ export default function useData() {
     // find the index in the array sortedData with the lowest price
     const bestPriceIndexToday = getBestPrice(sortedData.filter(isToday));
     sortedData[bestPriceIndexToday].bestPrice = true;
-    bestPriceToday = sortedData[bestPriceIndexToday].price;
+    // bestPriceToday = sortedData[bestPriceIndexToday].price;
+    bestPriceToday = prices.pvpcToday.bestPrice;
 
     // find the index in the array sortedData with the lowest price
     const bestPriceIndexTomorrow = getBestPrice(sortedData.filter(isTomorrow));
     sortedData[bestPriceIndexTomorrow].bestPrice = true;
-    bestPriceTomorrow = sortedData[bestPriceIndexTomorrow].price;
+    // bestPriceTomorrow = sortedData[bestPriceIndexTomorrow].price;
+    bestPriceTomorrow = prices.pvpcTomorrow.bestPrice;
 
     // find the index in the array sortedData with the lowest humidity and highest temperature
     const bestWeatherIndexToday = getBestWeather(sortedData.filter(isToday));
