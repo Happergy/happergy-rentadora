@@ -4,11 +4,9 @@ import usePosition from "./usePosition";
 import useSWR from "swr";
 
 const fetcherPrices = (url) =>
-  fetch(url, {
-    method: "get",
-    headers: { "Content-Type": "application/json" },
-    cache: "no-store",
-  }).then((res) => res.json());
+  fetch(url)
+    .then((r) => r.json())
+    .then((data) => data);
 
 const API_KEY = "4a30997d288e2ad2ace0882245357ff1";
 const FORMAT = "YYYYMMDD_HH";
@@ -29,7 +27,8 @@ export default function useData() {
 
   const { data: prices } = useSWR(
     "https://raw.githubusercontent.com/Happergy/happergy-prices/main/data/happergy.json",
-    fetcherPrices
+    fetcherPrices,
+    { refreshInterval: 1000 * 60 * 5 }
   );
   const { data: weatherData } = useSWR(
     { url: "https://api.openweathermap.org/data/2.5/forecast", position },
@@ -69,9 +68,7 @@ export default function useData() {
     extractWeatherData(currentWeather);
   }
 
-  console.log("prices", prices);
   const { pvpc } = prices || {};
-  console.log("pvpc", pvpc);
   if (pvpc?.nextPrices) {
     // extend data with prices and simulated prices if available
     // adding to the price the next price to get the price for the two hours duration
@@ -92,7 +89,6 @@ export default function useData() {
     }
   }
 
-  console.log("data", data);
   function compare(a, b) {
     if (a.date < b.date) {
       return -1;
@@ -150,13 +146,13 @@ export default function useData() {
     const bestPriceIndexToday = getBestPrice(sortedData.filter(isToday));
     sortedData[bestPriceIndexToday].bestPrice = true;
     // bestPriceToday = sortedData[bestPriceIndexToday].price;
-    bestPriceToday = prices.pvpcToday.bestPrice;
+    bestPriceToday = prices?.pvpcToday.bestPrice;
 
     // find the index in the array sortedData with the lowest price
     const bestPriceIndexTomorrow = getBestPrice(sortedData.filter(isTomorrow));
     sortedData[bestPriceIndexTomorrow].bestPrice = true;
     // bestPriceTomorrow = sortedData[bestPriceIndexTomorrow].price;
-    bestPriceTomorrow = prices.pvpcTomorrow.bestPrice;
+    bestPriceTomorrow = prices?.pvpcTomorrow.bestPrice;
 
     // find the index in the array sortedData with the lowest humidity and highest temperature
     const bestWeatherIndexToday = getBestWeather(sortedData.filter(isToday));
